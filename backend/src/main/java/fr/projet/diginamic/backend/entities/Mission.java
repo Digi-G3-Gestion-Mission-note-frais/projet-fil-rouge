@@ -1,12 +1,13 @@
 package fr.projet.diginamic.backend.entities;
 
-import fr.projet.diginamic.backend.enums.TransportEnum;
-import fr.projet.diginamic.backend.enums.StatusEnum;
-
 import java.util.Date;
 
+import fr.projet.diginamic.backend.enums.StatusEnum;
+import fr.projet.diginamic.backend.enums.TransportEnum;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -69,6 +70,7 @@ public class Mission {
 	 * Current status of the mission (e.g., pending, approved).
 	 */
 	@Column(name = "status", length = 150, nullable = false)
+	@Enumerated(EnumType.STRING)
 	private StatusEnum status;
 
 	/**
@@ -90,6 +92,7 @@ public class Mission {
 	 */
 	@Size(min = 2, max = 150)
 	@Column(name = "transport", length = 150)
+	@Enumerated(EnumType.STRING)
 	private TransportEnum transport;
 
 	/**

@@ -1,7 +1,7 @@
 package fr.projet.diginamic.backend.repositories.interfaces;
 
-import java.util.ArrayList;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,7 +14,7 @@ public interface ExpenseLineRepository extends JpaRepository<ExpenseLine, Long> 
 	/**Method to get all expenseLines on the database
      * @return An arrayList of all expenseLines
      */
-	ArrayList<ExpenseLine> findAll();
+	Page<ExpenseLine> findAll(Pageable pagination);
 	
 
 }

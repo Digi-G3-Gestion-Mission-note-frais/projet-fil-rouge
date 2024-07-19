@@ -1,8 +1,7 @@
 package fr.projet.diginamic.backend.controllers;
 
-import java.util.ArrayList;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.projet.diginamic.backend.dtos.ExpenseLineDto;
@@ -31,8 +31,8 @@ public class ExpenseLineController {
      * @throws Exception if there is no result
      */
 	 @GetMapping
-	    public ArrayList<ExpenseLineDto> getExpenseLines() {
-		 ArrayList<ExpenseLineDto> expenseLines= expenseLineService.getExpenseLines();
+	    public Page<ExpenseLineDto> getExpenseLines(@RequestParam int page, @RequestParam int size) {
+		 Page<ExpenseLineDto> expenseLines= expenseLineService.getExpenseLines(page, size);
 	    	return expenseLines;
 	    }
 	 

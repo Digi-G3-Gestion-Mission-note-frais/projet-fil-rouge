@@ -1,7 +1,7 @@
 package fr.projet.diginamic.backend.dtos;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Set;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -29,5 +29,5 @@ public class ExpenseWithLinesDto {
 	private String status;
 	
     /** The expenseLines of this expense */
-	public Set<ExpenseLineDto> expenseLines;
+	public ArrayList<ExpenseLineDto> expenseLines;
 }

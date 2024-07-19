@@ -1,7 +1,6 @@
 package fr.projet.diginamic.backend.utils;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,7 +59,7 @@ public class ExpenseMapper {
 	 * @return the expense object after the mapping
 	 */
 	public Expense dtoWithLinesToBean(ExpenseWithLinesDto exp) {
-		Set<ExpenseLine> lines = new HashSet<>();
+		ArrayList<ExpenseLine> lines = new ArrayList<>();
 		for (ExpenseLineDto line : exp.getExpenseLines()) {
 			ExpenseLine newLine = new ExpenseLine();
 			newLine.setTva(line.getTva());
@@ -86,7 +85,7 @@ public class ExpenseMapper {
 	 */
 	public ExpenseWithLinesDto BeanToDtoWithLines(Expense exp) {
 
-		Set<ExpenseLineDto> lines = new HashSet<>();
+		ArrayList<ExpenseLineDto> lines = new ArrayList<>();
 		for (ExpenseLine line : exp.getExpenseLines()) {
 			ExpenseLineDto newLine = new ExpenseLineDto();
 			newLine.setTva(line.getTva());

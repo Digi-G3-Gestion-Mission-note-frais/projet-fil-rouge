@@ -3,9 +3,14 @@ package fr.projet.diginamic.backend.services;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import fr.projet.diginamic.backend.dtos.ExpenseDto;
 import fr.projet.diginamic.backend.dtos.ExpenseLineDto;
+import fr.projet.diginamic.backend.entities.Expense;
 import fr.projet.diginamic.backend.entities.ExpenseLine;
 import fr.projet.diginamic.backend.entities.ExpenseType;
 import fr.projet.diginamic.backend.repositories.interfaces.ExpenseLineRepository;
@@ -23,18 +28,14 @@ public class ExpenseLineService {
 
 	@Autowired
 	private ExpenseLineMapper expenseLineMapper;
-
-	/**
-	 * method to get all ExpenseLines and transform them into ExpenseLineDto
-	 * 
-	 * @return expenseLinesDto, a Dto with all ExpenseLines
-	 */
-	public ArrayList<ExpenseLineDto> getExpenseLines() {
-		ArrayList<ExpenseLine> expenseLines = expenseLineRepo.findAll();
-		ArrayList<ExpenseLineDto> expenseLinesDto = new ArrayList();
-		for (ExpenseLine expenseLine : expenseLines) {
-			expenseLinesDto.add(expenseLineMapper.BeanToDto(expenseLine));
-		}
+	
+	/** method to get all ExpenseLines and transform them into ExpenseLineDto
+     * @return expenseLinesDto, a Dto with all ExpenseLines
+     */
+	public Page<ExpenseLineDto> getExpenseLines(int page, int size){
+		Pageable pagination = PageRequest.of(page, size);
+    	Page<ExpenseLine>expenseLines=expenseLineRepo.findAll(pagination);
+    	Page<ExpenseLineDto> expenseLinesDto = expenseLines.map(expenseLineMapper::BeanToDto);
 		return expenseLinesDto;
 	}
 
