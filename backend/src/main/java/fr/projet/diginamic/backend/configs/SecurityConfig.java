@@ -31,6 +31,20 @@ public class SecurityConfig {
     @Autowired
     private JWTAuthMiddleware jwtAuthMidlleware;
 
+    private static final String[] SWAGGER_WHITELIST = {
+            "/api/v1/auth/**",
+            "/v2/api-docs",
+            "/v3/api-docs",
+            "/v3/api-docs/**",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui/**",
+            "/webjars/**",
+            "/swagger-ui.html"
+    };
+
     /**
      * Security filter chain
      * 
@@ -40,12 +54,17 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                // .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(registry -> {
+
                     registry
-                            .requestMatchers("/",
+                            .requestMatchers(
                                     "/api/auth/login",
                                     "/api/auth/register")
+                            .permitAll();
+                    registry
+                            .requestMatchers(SWAGGER_WHITELIST)
                             .permitAll();
                     registry
                             .requestMatchers("/api/auth/user").hasAnyRole("USER", "MANAGER", "ADMIN");
@@ -55,9 +74,8 @@ public class SecurityConfig {
                             .requestMatchers("/api/auth/admin").hasRole("ADMIN");
                     registry
                             .anyRequest().authenticated();
-                });
-        http.httpBasic(Customizer.withDefaults());
-        http.addFilterBefore(jwtAuthMidlleware, UsernamePasswordAuthenticationFilter.class);
+                })
+                .addFilterBefore(jwtAuthMidlleware, UsernamePasswordAuthenticationFilter.class);
         // http.logout(authz -> authz
         // .deleteCookies("JSESSIONID")
         // .logoutRequestMatcher(new AntPathRequestMatcher("/logout")));

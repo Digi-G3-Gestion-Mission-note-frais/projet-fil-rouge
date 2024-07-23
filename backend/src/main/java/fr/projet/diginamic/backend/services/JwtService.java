@@ -44,23 +44,24 @@ public class JwtService {
                 .signWith(getSecretKey()).compact();
     }
 
-    // /**
-    // * Refresh by generating a new JWT token
-    // *
-    // * @param oldToken - the old JWT token
-    // */
-    // public String refreshToken(String oldToken) {
-    // Claims claims = getClaims(oldToken);
+    /**
+     * Refresh by generating a new JWT token
+     *
+     * @param oldToken - the old JWT token
+     */
+    public String refreshToken(String oldToken) {
+        Claims oldClaims = getClaims(oldToken);
+        String username = oldClaims.getSubject();
+        Map<String, String> roleClaim = new HashMap<>();
 
-    // Map<String, String> roleClaim = new HashMap<>();
-    // roleClaim.put("role", claims.get("role", String.class));
+        roleClaim.put("role", oldClaims.get("role", String.class));
 
-    // return Jwts.builder()
-    // .claims(claims).subject(userDetails.getUsername())
-    // .issuedAt(Date.from(Instant.now()))
-    // .expiration(Date.from(Instant.now().plusMillis(VALIDITY)))
-    // .signWith(getSecretKey()).compact();
-    // }
+        return Jwts.builder()
+                .claims(roleClaim).subject(username)
+                .issuedAt(Date.from(Instant.now()))
+                .expiration(Date.from(Instant.now().plusMillis(VALIDITY)))
+                .signWith(getSecretKey()).compact();
+    }
 
     /** Get secret key object */
     private SecretKey getSecretKey() {

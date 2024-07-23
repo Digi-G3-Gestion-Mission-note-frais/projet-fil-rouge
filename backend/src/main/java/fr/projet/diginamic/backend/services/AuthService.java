@@ -109,12 +109,16 @@ public class AuthService {
                 newUser.getBirthDate(), newUser.getEmail(), newUser.getRole().getType());
     }
 
-    public String refreshToken(String token) {
-        Boolean isTokenValid = jwtService.isTokenExpirationValid(token);
+    /**
+     * Refresh token by generating a new JWT
+     * 
+     * @param oldToken - the token to refresh
+     */
+    public String refreshToken(String oldToken) {
+        Boolean isTokenValid = jwtService.isTokenExpirationValid(oldToken);
         if (!isTokenValid) {
             return null;
         }
-        // return jwtService.refreshToken(token);
-        return "token";
+        return jwtService.refreshToken(oldToken);
     }
 }

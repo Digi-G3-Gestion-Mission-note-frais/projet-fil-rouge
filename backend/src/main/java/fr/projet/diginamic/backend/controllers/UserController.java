@@ -16,10 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 import fr.projet.diginamic.backend.dtos.UserDto;
 import fr.projet.diginamic.backend.entities.UserEntity;
 import fr.projet.diginamic.backend.services.UserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /** User controller */
 @RestController
 @RequestMapping("/api/users")
+@SecurityRequirement(name = "bearerAuth")
+@Tag(name = "User", description = "User API endpoint")
 public class UserController {
     @Autowired
     UserService userService;

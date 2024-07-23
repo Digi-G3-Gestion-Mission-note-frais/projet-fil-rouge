@@ -16,10 +16,15 @@ import fr.projet.diginamic.backend.dtos.LoginDto;
 import fr.projet.diginamic.backend.dtos.RegisterDto;
 import fr.projet.diginamic.backend.dtos.UserDto;
 import fr.projet.diginamic.backend.services.AuthService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /** Auth controller for users */
 @RestController
 @RequestMapping("/api/auth")
+@Tag(name = "Auth", description = "Auth API for user management")
 public class AuthController {
     @Autowired
     private AuthService authService;
@@ -45,6 +50,7 @@ public class AuthController {
      * 
      * @param registerDto - the dto to register a new user
      */
+    @Operation(summary = "Register a new user", description = "Register a new user in the system")
     @PostMapping("/register")
     public ResponseEntity<UserDto> register(@RequestBody RegisterDto registerDto) {
         UserDto userDto = authService.register(registerDto);
@@ -55,30 +61,43 @@ public class AuthController {
         return ResponseEntity.ok(userDto);
     }
 
-    /** Route for retrieve user token */
+    /**
+     * Route for refresh token
+     * 
+     * @param oldToken - the token to refresh
+     */
+    @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/refresh")
-    public ResponseEntity<String> refreshToken(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-
-        if (token == null || token.substring(7).isEmpty()) {
+    public ResponseEntity<String> refreshToken(@RequestHeader(HttpHeaders.AUTHORIZATION) String oldToken) {
+        if (oldToken == null || oldToken.substring(7).isEmpty()) {
             return ResponseEntity.badRequest().build();
         }
 
-        return ResponseEntity.ok(token);
+        String newToken = authService.refreshToken(oldToken);
+
+        if (newToken == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok(newToken);
     }
 
     /** Route for check user authorization */
+    @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/user")
     public ResponseEntity<String> checkUser() {
         return ResponseEntity.ok("OK");
     }
 
     /** Route for check manager authorization */
+    @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/manager")
     public ResponseEntity<String> checkManager() {
         return ResponseEntity.ok("OK");
     }
 
     /** Route for check admin authorization */
+    @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/admin")
     public ResponseEntity<String> checkAdmin() {
         return ResponseEntity.ok("OK");
