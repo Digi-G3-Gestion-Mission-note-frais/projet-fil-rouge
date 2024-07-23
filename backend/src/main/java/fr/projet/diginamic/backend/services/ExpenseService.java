@@ -21,6 +21,7 @@ import fr.projet.diginamic.backend.dtos.ExpenseWithLinesDto;
 import fr.projet.diginamic.backend.entities.Expense;
 import fr.projet.diginamic.backend.repositories.interfaces.ExpenseRepository;
 import fr.projet.diginamic.backend.utils.ExpenseMapper;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**Service for all expense's related method*/
@@ -52,6 +53,15 @@ public class ExpenseService {
 		Expense expense= expenseRepo.findById(id).orElse(null);
 		ExpenseWithLinesDto expenseDto= expenseMapper.BeanToDtoWithLines(expense);
 		return expenseDto;
+	}
+
+	/**Method to get an expense by its id 
+	 * @param id, the id of the expense to get
+     * @return the expense found 
+	 * @throws EntityNotFoundException if not found
+     */
+	public Expense getExpenseBean(Long id){
+		return expenseRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("Expense not found with ID: " + id));
 	}
 	
 	/**Method to save an expense

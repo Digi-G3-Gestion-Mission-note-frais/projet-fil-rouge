@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import fr.projet.diginamic.backend.entities.Mission;
@@ -68,5 +70,12 @@ public interface MissionRepository extends JpaRepository<Mission, Long>, JpaSpec
 	 *         elements, and so on.
 	 */
 	Page<Mission> findAll(Pageable pageable);
+
+	Page<Mission> findByUserId(Long userId, Specification<Mission> spec, Pageable pageable);
+
+	List<Mission> findByUserId(Long userId);
+	
+	Page<Mission> findAllByUser_Manager_Id(Long managerId, Pageable pageable);
+
 
 }
