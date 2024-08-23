@@ -1,0 +1,42 @@
+<h3 class="text-2xl font-semibold mb-4 text-center">Expense Lines</h3>
+
+<table class="min-w-full border border-gray-300 bg-white rounded-md">
+  <thead class="bg-gray-200 text-gray-700">
+    <tr>
+      <th class="py-2 px-4 text-left">Date</th>
+      <th class="py-2 px-4 text-left">TVA</th>
+      <th class="py-2 px-4 text-left">Amount</th>
+      <th class="py-2 px-4 text-left">Type</th>
+      <th class="py-2 px-4 text-left">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let line of expenseLines" class="border-b hover:bg-gray-100">
+      <td class="py-2 px-4">{{ line.date | date }}</td>
+      <td class="py-2 px-4">{{ line.tva }}</td>
+      <td class="py-2 px-4">{{ line.amount }}</td>
+      <td class="py-2 px-4">{{ line.expenseType }}</td>
+      <td class="py-2 px-4">
+        <button 
+          *ngIf="line.id !== null" 
+          class="text-blue-600 hover:underline"
+          (click)="onModifyLine(line.id)">
+          Modifier
+        </button>
+        <button 
+          *ngIf="line.id !== null" 
+          class="text-red-600 hover:underline ml-2"
+          (click)="onRemoveLine(line.id)">
+          Supprimer
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<button 
+  class="mt-6 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+  (click)="onAddLine()">
+  Ajouter une nouvelle ligne de frais
+</button>
+

@@ -48,6 +48,7 @@ public class ExpenseMapper {
 		ExpenseDto newExp = new ExpenseDto();
 		newExp.setDate(exp.getDate());
 		newExp.setStatus(exp.getStatus());
+		newExp.setId(exp.getId());
 		return newExp;
 
 	}
@@ -92,6 +93,7 @@ public class ExpenseMapper {
 			newLine.setAmount(line.getAmount());
 			newLine.setExpenseType(line.getExpenseType().getType());
 			newLine.setDate(line.getDate());
+			newLine.setId(line.getId());
 			lines.add(newLine);
 		}
 
@@ -99,6 +101,7 @@ public class ExpenseMapper {
 		newExp.setDate(exp.getDate());
 		newExp.setStatus(exp.getStatus());
 		newExp.setExpenseLines(lines);
+		newExp.setId(exp.getId());
 		return newExp;
 
 	}

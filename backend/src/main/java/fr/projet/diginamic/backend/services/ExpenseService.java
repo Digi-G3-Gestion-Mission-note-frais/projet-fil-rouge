@@ -69,6 +69,7 @@ public class ExpenseService {
 	public Expense getExpenseBean(Long id){
 		return expenseRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("Expense not found with ID: " + id));
 	}
+
 	/**Method get all expenses of a user and transform them into ExpenseDto
 	 * @param token, the Jwt token to know who try to get the expense data
 	 * @return the List of all expenses og this user.
