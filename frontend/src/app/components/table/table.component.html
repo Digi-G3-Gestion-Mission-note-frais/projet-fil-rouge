@@ -1,0 +1,98 @@
+<table *ngIf="data.length" class="min-w-full divide-y divide-gray-200 overflow-x-auto border rounded-lg">
+  <thead class="bg-gray-50 ">
+      <tr>
+          <th *ngFor="let header of headers" scope="col" class=" text-center px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+              {{header.label}}
+          </th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Actions
+          </th>
+      </tr>
+  </thead>
+  <tbody class="bg-white divide-y divide-gray-200">
+    <tr *ngFor="let row of data" class="cursor-pointer hover hover:bg-slate-50">
+      <td *ngFor="let header of headers" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+        <div (click)="navigateToMission(row.id)">
+ 
+          <ng-container [ngSwitch]="header.value" >
+           
+            <div *ngSwitchCase="'startDate'" class="flex flex-col">
+              <span class="mb-1">Du: {{ row.startDate | date:'dd/MM/yyyy' }}</span>
+              <span> Au: {{ row.endDate | date:'dd/MM/yyyy' }}</span>
+            </div>
+ 
+            <div *ngSwitchCase="'transport'" class="text-center">
+              {{ getTransportLabel(row.transport) }}
+            </div>
+
+            <div *ngSwitchCase="'departureCity'" class="flex flex-col">
+             <span class="mb-1" *ngIf="row.departureCity.trim().toUpperCase() !== row.arrivalCity.trim().toUpperCase()">{{ row.departureCity }} - {{row.arrivalCity}}</span>
+             <span class="mb-1" *ngIf="row.departureCity.trim().toUpperCase() === row.arrivalCity.trim().toUpperCase()">{{row.arrivalCity}}</span>  
+            </div>
+    
+            <div *ngSwitchCase="'status'" class="px-2 py-1 rounded-full text-center" [ngClass]="{
+              'status-initial': row.status.toUpperCase() === 'INITIAL',
+              'status-validated': row.status.toUpperCase() === 'VALIDATED',
+              'status-in-progress': row.status.toUpperCase() === 'IN_PROGRESS',
+              'status-rejected': row.status.toUpperCase() === 'REJECTED',
+              'status-finished': row.status.toUpperCase() === 'FINISHED', 
+              'status-waiting': row.status.toUpperCase() === 'WAITING'
+            }">
+                {{getStatusLabel(row.status)}}
+            </div>  
+            
+            <div *ngSwitchCase="'expense'" class="text-center">
+              {{ getTotalExpense(row.expense) }} €
+            </div>
+  
+            <div *ngSwitchDefault class="text-center">
+              {{ row[header.value] }} <span *ngIf="header.displayCurrency">€</span>
+            </div>
+          </ng-container>
+        </div>
+      </td>
+  
+      <td class="px-6 py-4 whitespace-nowrap text-sm font-medium ">
+        <button mat-icon-button [matMenuTriggerFor]="menu" class="action-btn">
+          <mat-icon class="text-slate-600">more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu" aftermenu="matMenu" xposition="after">
+          <button mat-menu-item (click)="navigateToMission(row.id)">
+            <mat-icon>reorder</mat-icon>
+            <span>Détails</span>
+          </button>
+          <button mat-menu-item *ngIf="row.status.toUpperCase() !== 'FINISHED'" (click)="deleteMission(row)">
+            <mat-icon>delete</mat-icon>
+            <span>Supprimer</span>
+          </button>
+        </mat-menu>
+
+      </td>
+      
+    </tr>
+  </tbody>  
+</table>
+
+<div *ngIf="!data.length" class="min-w-full w-100 h-60 border flex justify-center rounded-lg bg-slate-50 align-center">
+  <span class="text-center m-auto text-slate-400">Aucune donnée pour le moment.</span>
+</div>
+
+<mat-paginator
+*ngIf="showPagination"
+  #paginator
+  class="demo-paginator border min-w-full p-2 bg-white"
+  [class.hidden]="dataSource.filteredData.length === 0"
+  (page)="handlePageEvent($event)"
+  [length]="totalElements"
+  [pageSize]="pageSize"
+  [pageIndex]="pageIndex"
+  [disabled]="disabled"
+  [showFirstLastButtons]="showFirstLastButtons"
+  [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []"
+  [hidePageSize]="hidePageSize"
+  aria-label="Select page">
+</mat-paginator>
+
+
+
+

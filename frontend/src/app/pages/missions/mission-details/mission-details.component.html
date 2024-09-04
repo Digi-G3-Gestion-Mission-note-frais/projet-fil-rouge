@@ -1,0 +1,137 @@
+   
+   <app-layout>
+   <div *ngIf="mission && mission.status" class="container min-w-full">
+
+    <div class="mb-6">
+      <button (click)="goBack()" class="flex items-center text-gray-600 hover:text-gray-800">
+        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+        Retour
+      </button>
+    </div>
+  
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div *ngIf="!editionMode" class="bg-white p-6 rounded-lg shadow-md">
+        <div class="flex justify-between mb-4 text-center pb-6">
+          <div class="mx-auto">
+            <h6 class="text-sm font-bold text-gray-800 mb-0">
+              <span *ngIf="mission.label && mission.label.trim() !== ''">{{ mission.label }}</span>
+              <span *ngIf="!mission.label || mission.label.trim() === ''">Mission #{{ mission.id }}</span>
+            </h6>            
+          </div>
+
+          <div class="inline-block w-fit h-fit px-5 py-1 rounded-2xl text-sm font-medium text-center" [ngClass]="{
+            'status-initial': mission.status.toUpperCase() === 'INITIAL',
+            'status-validated': mission.status.toUpperCase() === 'VALIDATED',
+            'status-in-progress': mission.status.toUpperCase() === 'IN_PROGRESS',
+            'status-rejected': mission.status.toUpperCase() === 'REJECTED',
+            'status-finished': mission.status.toUpperCase() === 'FINISHED', 
+            'status-waiting': mission.status.toUpperCase() === 'WAITING'
+          }">
+            {{ getStatusLabel(mission.status) }}
+          </div>
+        </div>
+  
+        <div class="grid grid-cols-2 gap-4 mb-4">
+          <div>
+            <span class="text-sm text-gray-500">Libellé mission</span>
+            <p class="text-medium text-gray-600">{{ mission.label }}</p>
+          </div>
+          <div>
+            <span class="text-sm text-gray-500">Type</span>
+            <p class="text-medium text-gray-600">{{ mission.labelNatureMission }}</p>
+          </div>
+          <div>
+            <span class="text-sm text-gray-500">Coût total</span>
+            <p class="text-medium text-gray-600">{{mission.totalPrice}}€</p>
+          </div>
+          <div>
+            <span class="text-sm text-gray-500">Dates de mission</span>
+            <p class="text-medium text-gray-600">Du {{ mission.startDate | date:'dd/MM/yyyy' }} au {{ mission.endDate | date:'dd/MM/yyyy' }}</p>
+          </div>
+   
+          <div>
+            <span class="text-sm text-gray-500">Transport</span>
+            <p class="text-medium text-gray-600"> {{ getTransportLabel(mission.transport)  || 'Aucun' }}</p>
+          </div>
+          <div>
+            <span class="text-sm text-gray-500">Villes</span>
+            <p *ngIf="mission.departureCity.trim().toUpperCase() !== mission.arrivalCity.trim().toUpperCase()" class="text-medium text-gray-600" >{{ mission.departureCity }} - {{mission.arrivalCity}}</p>
+            <p *ngIf="mission.departureCity.trim().toUpperCase() === mission.arrivalCity.trim().toUpperCase()" class="text-medium text-gray-600">{{ mission.departureCity }}</p>
+          </div>
+          <div>
+            <span class="text-sm text-gray-500">Montant prime</span>
+            <p class="text-medium text-gray-600">{{ mission.bountyAmount }}€</p>
+          </div>
+        </div>
+  
+        <div class="mt-10 mx-auto flex justify-evenly">
+          <button 
+            class="text-white px-4 py-2 rounded"
+            [ngClass]="{
+              'bg-red-400': mission.status.toUpperCase() !== 'FINISHED',
+              'bg-gray-200 cursor-not-allowed': mission.status.toUpperCase() === 'FINISHED'
+            }" 
+            (click)="displayConfirmDialog()" 
+            [disabled]="mission.status.toUpperCase() === 'FINISHED'">
+            Supprimer
+          </button>
+        
+          <button 
+            class="text-white px-4 py-2 rounded"
+            [ngClass]="{
+              'bg-gray-500': mission.status.toUpperCase() === 'INITIAL' || mission.status.toUpperCase() === 'REJECTED',
+              'bg-gray-200 cursor-not-allowed': mission.status.toUpperCase() !== 'INITIAL' && mission.status.toUpperCase() !== 'REJECTED'
+            }" 
+            (click)="editionMode = true" 
+            [disabled]="mission.status.toUpperCase() !== 'INITIAL' && mission.status.toUpperCase() !== 'REJECTED'">
+            Modifier
+          </button>
+        </div>
+        
+      </div>
+    
+      <div *ngIf="editionMode">
+        <app-mission-form [mission]="mission" (closeForm)="editionMode = false" (closeFormAndSave)="handleMissionUpdate($event)" ></app-mission-form>
+
+      </div>
+     
+  
+      <div *ngIf="expense?.expenseLines?.length" class="bg-white p-6 rounded-lg shadow-md">
+        <div class="mb-4">
+          <h6 class="font-bold text-center text-gray-800">Notes de frais associée</h6>
+        </div>
+        <table class="min-w-full bg-white">
+          <thead class="bg-gray-100">
+            <tr>
+              <th class="py-2 px-4 text-left text-sm text-gray-500">Date</th>
+              <th class="py-2 px-4 text-left text-sm text-gray-500">Nature</th>
+              <th class="py-2 px-4 text-left text-sm text-gray-500">TVA</th>
+              <th class="py-2 px-4 text-left text-sm text-gray-500">Montant</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let line of expense.expenseLines" class="py-1 hover:bg-slate-50">
+              <td class="py-2 px-4 text-sm text-gray-500">{{ line.date | date:'dd/MM/yyyy' }}</td>
+              <td class="py-2 px-4 text-sm text-gray-500">{{ line.expenseType }}</td>
+              <td class="py-2 px-4 text-sm text-gray-500">{{ line.tva }}%</td>
+              <td class="py-2 px-4 text-sm text-gray-500">{{ line.amount }}€</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="mt-6">
+          <p class="text-right text-sm text-gray-500">Total HT: {{ calculateTotalHT() }}€</p>
+          <p class="text-right text-lg font-bold text-gray-800">Total TTC: {{ calculateTotalTTC() }}€</p>
+        </div>
+      </div>
+    </div>
+    <app-confirm-dialog
+    *ngIf="showConfirmDialog"
+    [dialogData]="dialogData"
+    (confirm)="deleteMission(mission.id)"
+    (cancel)="showConfirmDialog = false"
+  ></app-confirm-dialog>
+  </div>
+</app-layout>
+

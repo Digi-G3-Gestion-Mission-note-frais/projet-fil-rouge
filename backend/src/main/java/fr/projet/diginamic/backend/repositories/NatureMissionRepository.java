@@ -1,11 +1,12 @@
 package fr.projet.diginamic.backend.repositories;
 
-import fr.projet.diginamic.backend.entities.NatureMission;
-import jakarta.transaction.Transactional;
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import fr.projet.diginamic.backend.entities.NatureMission;
+import jakarta.transaction.Transactional;
 
 /**
  * Repository interface for NatureMission entities.
@@ -18,7 +19,7 @@ public interface NatureMissionRepository extends JpaRepository<NatureMission, In
      * @param label the label of the NatureMission.
      * @return a list of NatureMissions with the given label.
      */
-    List<NatureMission> findByLabel(String label);
+    //List<NatureMission> findByLabel(String label);
 
     /**
      * Find a NatureMission by its ID.
@@ -52,6 +53,7 @@ public interface NatureMissionRepository extends JpaRepository<NatureMission, In
      * @return true if an active NatureMission with the given label exists, false otherwise.
      */
     boolean existsByLabelAndEndDateIsNull(String label);
+    Optional<NatureMission> findByLabel(String label);
 
 }
 

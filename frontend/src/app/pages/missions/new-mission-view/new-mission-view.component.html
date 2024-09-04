@@ -1,0 +1,22 @@
+<app-layout>
+<div class="container container min-w-full min-h-full">
+
+    <div class="mb-6">
+        <button (click)="goBack()" class="flex items-center text-gray-600 hover:text-gray-800">
+          <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          Retour
+        </button>
+      </div>
+      <div>
+          <app-mission-form (closeForm)="showDialog()"></app-mission-form>
+      </div>
+      <app-confirm-dialog
+      *ngIf="showConfirmDialog"
+      [dialogData]="dialogData"
+      (confirm)="cancelChanges()"
+      (cancel)="cancelDialog()"
+    ></app-confirm-dialog>
+</div>
+</app-layout>

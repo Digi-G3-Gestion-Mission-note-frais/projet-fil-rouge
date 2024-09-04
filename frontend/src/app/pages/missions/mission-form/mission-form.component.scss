@@ -1,0 +1,25 @@
+::ng-deep .mat-focused .mat-form-field-label {
+    /*change color of label*/
+    color: green !important;
+   }
+  
+   ::ng-deep.mat-form-field-underline {
+    /*change color of underline*/
+    background-color: green !important;
+  } 
+  
+  ::ng-deep.mat-form-field-ripple {
+   /*change color of underline when focused*/
+   background-color: green !important;
+  }
+
+  ::ng-deep input.mat-input-element {
+    background-color: white !important;
+  }
+  
+
+// .custom-input-background .mat-form-field-appearance-outline .mat-form-field-flex,
+// .custom-input-background .mat-form-field-appearance-fill .mat-form-field-flex,
+// .custom-input-background .mat-input-element {
+//   background-color: white !important;
+// }

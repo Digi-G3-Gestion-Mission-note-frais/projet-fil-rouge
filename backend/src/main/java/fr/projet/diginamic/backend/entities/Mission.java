@@ -1,9 +1,5 @@
 package fr.projet.diginamic.backend.entities;
 
-import fr.projet.diginamic.backend.enums.TransportEnum;
-import fr.projet.diginamic.backend.enums.StatusEnum;
-
-import java.time.LocalDate;
 import java.util.Date;
 
 import fr.projet.diginamic.backend.enums.StatusEnum;
@@ -64,7 +60,7 @@ public class Mission {
 	/**
 	 * Total cost of the mission.
 	 */
-	@Min(value = 1)
+	@Min(value = 0)
 	@Column(name = "total_price", nullable = false)
 	private Double totalPrice = 0.0;
 

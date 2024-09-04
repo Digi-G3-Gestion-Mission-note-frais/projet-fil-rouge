@@ -1,0 +1,108 @@
+<div class="flex justify-between" [ngClass]="{'grid grid-cols-1 md:grid-cols-2 gap-4': !mission}">
+<div class="bg-white p-6 rounded-lg shadow-md min-w-full">
+    <form [formGroup]="missionForm" (ngSubmit)="submit()" class="grid grid-cols-2 gap-4">
+      
+      <mat-form-field class="col-span-2">
+        <mat-label>Libellé de la mission</mat-label>
+        <input matInput formControlName="label" placeholder="Mission n° 678">
+        <mat-error *ngIf="missionForm.controls.label.invalid">Le libellé est obligatoire.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Type de mission</mat-label>
+        <mat-select formControlName="natureMissionId">
+          <mat-option *ngFor="let nature of natureMissions" [value]="nature.id">{{nature.label}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+      <mat-form-field>
+        <mat-label>Date de début de la mission</mat-label>
+        <input matInput [matDatepicker]="startDatePicker" formControlName="startDate" placeholder="JJ/MM/AAAA">
+        <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #startDatePicker></mat-datepicker>
+        <mat-error *ngIf="missionForm.controls.startDate.invalid">Date invalide.</mat-error>
+      </mat-form-field>
+  
+      <mat-form-field>
+        <mat-label>Date de la fin de la mission</mat-label>
+        <input matInput [matDatepicker]="endDatePicker" formControlName="endDate" placeholder="JJ/MM/AAAA">
+        <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #endDatePicker></mat-datepicker>
+        <mat-error *ngIf="missionForm.controls.endDate.invalid">Date invalide.</mat-error>
+      </mat-form-field>
+  
+      <mat-form-field>
+        <mat-label>Transport</mat-label>
+        <mat-select formControlName="transport">
+          <mat-option *ngFor="let transport of transportModes" [value]="transport.key">
+            {{transport.label}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      
+      <mat-form-field>
+        <mat-label>Ville de départ</mat-label>
+        <mat-select formControlName="departureCity">
+          <mat-option *ngFor="let city of cities" [value]="city">{{city}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+      <mat-form-field>
+        <mat-label>Ville d'arrivée</mat-label>
+        <mat-select formControlName="arrivalCity">
+          <mat-option *ngFor="let city of cities" [value]="city">{{city}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+      <div class="col-span-2 flex justify-evenly mt-6">
+        <button mat-button type="button" class="bg-gray-400 text-white" (click)="cancel()">Annuler</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!areFormAndConditionsListValid">
+          <span *ngIf="!mission">Créer</span>
+          <span *ngIf="mission">Enregistrer</span>
+        </button>
+      </div>
+  
+    </form>
+    
+    <app-confirm-dialog
+      *ngIf="showConfirmDialog"
+      [dialogData]="dialogData"
+      (confirm)="cancelChanges()"
+      (cancel)="cancelDialog()"
+    ></app-confirm-dialog>
+  </div>
+  
+  <div *ngIf="!mission" class="bg-white p-6 rounded-lg shadow-md ml-8" style="min-height: fit-content; height: 28vh;">
+
+    <p class="text-xl leading-tight text-gray-500 mb-4 text-center pb-7">À vérifier</p>
+    <ul class="my-auto">
+      <li class="text-s py-4 flex items-center" [ngClass]="{
+            'text-gray-500': !isStartDateValid,
+            'text-gray-700': isStartDateValid
+          }">
+        <mat-icon *ngIf="isStartDateValid" class="text-green-500 mr-2">check</mat-icon>
+        <mat-icon *ngIf="!isStartDateValid" class="text-red-500 mr-2">close</mat-icon>
+        La mission doit commencer au plus tôt demain.
+      </li>
+
+      <li class="text-s py-4 flex items-center" [ngClass]="{
+            'text-gray-500': !isEndDateValid && !formSubmitted,
+            'text-gray-700': isEndDateValid
+          }">
+        <mat-icon *ngIf="isEndDateValid" class="text-green-500 mr-2">check</mat-icon>
+        <mat-icon *ngIf="!isEndDateValid" class="text-red-500 mr-2">close</mat-icon>
+        La date de fin doit être égale ou postérieure à la date de début.
+      </li>
+
+      <li class="text-s py-4 flex items-center" [ngClass]="{
+        'text-gray-500': !isTransportConditionValid,
+        'text-gray-700': isTransportConditionValid
+      }">
+    <mat-icon *ngIf="isTransportConditionValid" class="text-green-500 mr-2">check</mat-icon>
+    <mat-icon *ngIf="!isTransportConditionValid" class="text-red-500 mr-2">close</mat-icon>
+    En avion, la mission doit être planifiée au moins 7 jours à l'avance.
+  </li>
+    </ul>
+  </div>
+
+</div> 

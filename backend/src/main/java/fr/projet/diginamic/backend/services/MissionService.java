@@ -25,14 +25,13 @@ import fr.projet.diginamic.backend.entities.NatureMission;
 import fr.projet.diginamic.backend.entities.UserEntity;
 import fr.projet.diginamic.backend.enums.StatusEnum;
 import fr.projet.diginamic.backend.enums.TransportEnum;
+import fr.projet.diginamic.backend.exceptions.MissionServiceException;
 import fr.projet.diginamic.backend.mappers.MissionMapper;
 import fr.projet.diginamic.backend.repositories.MissionRepository;
 import fr.projet.diginamic.backend.repositories.interfaces.UserRepository;
 import fr.projet.diginamic.backend.specs.MissionSpecifications;
 import fr.projet.diginamic.backend.utils.CalculateMissionPricing;
 import jakarta.persistence.EntityNotFoundException;
-
-import fr.projet.diginamic.backend.exceptions.MissionServiceException;
 
 /**
  * Service class for managing mission entities.
@@ -191,7 +190,7 @@ public class MissionService {
      * @return a page of missions that match the specification.
      */
     @Transactional(readOnly = true)
-    public Page<DisplayedMissionDTO> findAllMissionsWithSpecsForCurrentUser(String email, String status, String nature, String label,
+    public Page<DisplayedMissionDTO> findAllMissionsWithSpecsForCurrentUser(String email, String status, String nature, String label, String withExpense,
             Pageable pageable){
 
                 UserEntity user = userService.getOneByEmail(email);
@@ -200,7 +199,7 @@ public class MissionService {
                 }
                 Long userId = user.getId();
             
-                Specification<Mission> spec = createSpecificationForEmployee(userId, status, nature, label);
+                Specification<Mission> spec = createSpecificationForEmployee(userId, status, nature, label, withExpense);
 
                 try{
                     return missionRepository.findAll(spec, pageable).map(m -> missionMapper.fromBeantoDisplayedMissionDTO(m));
@@ -467,8 +466,8 @@ public class MissionService {
      * @return A Specification object that can be used to perform the query with the
      *         specified criteria.
      */
-    private Specification<Mission> createSpecificationForEmployee(Long userId, String status, String nature, String label) {
-        return MissionSpecifications.filterMissionsByCriteriaForEmployee(userId, status, nature, label);
+    private Specification<Mission> createSpecificationForEmployee(Long userId, String status, String nature, String label, String withExpense) {
+        return MissionSpecifications.filterMissionsByCriteriaForEmployee(userId, status, nature, label, withExpense);
     }
 
     //-------------------------------- BOUNTY REPORT --------------------------------

@@ -12,6 +12,7 @@ import fr.projet.diginamic.backend.entities.UserEntity;
 import fr.projet.diginamic.backend.services.ExpenseService;
 import fr.projet.diginamic.backend.services.NatureMissionService;
 import fr.projet.diginamic.backend.services.UserService;
+import fr.projet.diginamic.backend.utils.ExpenseMapper;
 
 /**
  * Mapper class for converting between Mission entities and their corresponding DTOs.
@@ -29,6 +30,9 @@ public class MissionMapper {
     
     @Autowired
     ExpenseService expenseService;
+
+    @Autowired
+    ExpenseMapper expenseMapper;
 
     /**
      * Converts a Mission entity to a DisplayedMissionDTO.
@@ -49,7 +53,8 @@ public class MissionMapper {
         dto.setArrivalCity(mission.getArrivalCity());
         dto.setUserId(mission.getUser().getId());
         dto.setNatureMissionId(mission.getNatureMission().getId());
-        dto.setExpenseId(mission.getExpense() != null ? mission.getExpense().getId() : null);
+        dto.setExpense(mission.getExpense() != null ? expenseMapper.BeanToDtoWithLines(mission.getExpense()) : null);
+
         dto.setBountyAmount(mission.getBountyAmount());
         dto.setBountyDate(mission.getBountyDate());
         dto.setTotalPrice(mission.getTotalPrice());
@@ -78,7 +83,7 @@ public class MissionMapper {
         UserEntity user = userService.getOne(dto.getUserId());
         NatureMission natureMisison = natureMissionService.getNatureMissionBeanById(dto.getNatureMissionId());
 
-        Expense expense = dto.getExpenseId() != null ? expenseService.getExpenseBean(dto.getExpenseId()) : null;
+        Expense expense = dto.getExpense() != null ? expenseMapper.dtoWithLinesToBean(dto.getExpense()) : null;
         mission.setUser(user);
         mission.setNatureMission(natureMisison);
         mission.setExpense(expense);
@@ -132,4 +137,6 @@ public class MissionMapper {
         return mission;
     }
 
+
 }
+

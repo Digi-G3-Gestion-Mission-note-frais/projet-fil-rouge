@@ -1,0 +1,100 @@
+  <app-layout>
+  <div class="min-h-full">
+
+        <div class="my-10">
+            <button (click)="goBack()" class="flex items-center text-gray-600 hover:text-gray-800 ">
+              <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+              </svg>
+              Retour
+            </button>
+          </div>
+
+    <!-- Titre et Bouton Ajouter mission -->
+    <div class="flex justify-between items-center mt-4">
+        <h6 class="font-medium leading-tight text-gray-700">Toutes mes missions</h6>
+        <button class="bg-black text-white rounded-3xl px-4 py-2 rounded hover:bg-gray-800" [routerLink]="['new']" routerLinkActive="active">
+            Ajouter mission
+        </button>
+    </div>
+
+    <!-- Filtres: Date, Statut, Type -->
+    <div class="flex justify-between items-center mt-12 space-x-4">
+        <div class="flex items-center">
+            <label class="text-sm text-gray-600 mr-2">Date:</label>
+            <mat-form-field class="w-full">
+                <mat-select [(value)]="queryParams.orderFilter" (selectionChange)="onFilterChange()">
+                    <mat-option value="desc">Du plus récent au plus ancien</mat-option>
+                    <mat-option value="asc">Du plus ancien au plus récent</mat-option>
+                    </mat-select>
+            </mat-form-field>
+        </div>
+        
+        <div class="flex items-center">
+            <label class="text-sm text-gray-600 mr-2">Statut:</label>
+  <mat-form-field class="w-full">
+    <mat-select [(value)]="queryParams.statusFilter" (selectionChange)="onFilterChange()">
+      <mat-option value="">Tous</mat-option>
+        <mat-option *ngFor="let entry of statusEnum" [value]="entry[0]">{{entry[1]}}</mat-option>
+    </mat-select>
+</mat-form-field>
+
+        </div>
+        <div class="flex items-center">
+            <label class="text-sm text-gray-600 mr-2">Type:</label>
+            <mat-form-field class="w-full">
+                <mat-select [(value)]="queryParams.natureMissionFilter" (selectionChange)="onFilterChange()">
+                  <mat-option value="">Tous</mat-option>
+                    <mat-option *ngFor="let natureMission of natureMissions" [value]="natureMission.label">{{natureMission.label}}</mat-option>
+                
+                    </mat-select>
+            </mat-form-field>
+        </div>
+        
+    </div>
+
+    <!-- Searchbar -->
+    <div class='max-w-md ml-auto mt-8 mb-1'>
+        <div class="relative flex items-center w-full h-12 rounded-lg focus-within:shadow-lg bg-white overflow-hidden border border-gray-300">
+            <div class="grid place-items-center h-full w-12 text-gray-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+            </div>
+
+            <input
+            (input)="onFilterChange(600)"
+            class="peer h-full w-full outline-none text-sm text-gray-700 pr-2"
+            type="text"
+            id="search"
+            [(ngModel)]="queryParams.searchQuery"
+            placeholder="Rechercher mission, collaborateur..." /> 
+        </div>
+    </div>
+
+    <button class="mb-12 mt-0 border-black" *ngIf="haveFiltersChanged" (click)="resetFilters()"> X Réinitialiser filtres</button>
+    <!-- Nombre de missions -->
+    <p class="py-1 text-gray-500">{{responseData?.totalElements}} missions au total</p>
+
+    <!-- Tableau -->
+    <app-table 
+        [headers]="headers_missions_collaborators" 
+        [data]="missions" 
+        [totalElements]="responseData?.totalElements ?? 0" 
+        [pageIndex]="responseData?.number ?? 0"
+        [pageSize]="responseData?.size ?? 5"
+        [showPagination]="true"
+        (pageChange)="handlePageEvent($event)"
+        (delete)="showDialog($event)"
+    ></app-table>
+    
+    <!-- Dialog de Confirmation -->
+    <app-confirm-dialog
+        *ngIf="showConfirmDialog"
+        [dialogData]="dialogData"
+        (confirm)="deleteMission()"
+        (cancel)="cancelDialog()"
+    ></app-confirm-dialog>
+</div>
+</app-layout>
+

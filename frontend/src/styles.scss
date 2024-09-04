@@ -5,6 +5,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import  "@angular/material/prebuilt-themes/azure-blue.css"; 
+
 * {
   margin: 0;
   padding: 0;
@@ -16,4 +18,33 @@
 
 html {
   height: 100vh;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+@layer components {
+  .status-initial {
+    @apply bg-indigo-100 text-indigo-800 px-2 py-1 rounded-full text-center;
+  }
+
+  .status-validated {
+    @apply bg-green-100 text-green-800 px-2 py-1 rounded-full text-center;
+  }
+
+  .status-in-progress {
+    @apply bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-center;
+  }
+
+  .status-rejected {
+    @apply bg-red-100 text-red-800 px-2 py-1 rounded-full text-center;
+  }
+
+  .status-finished {
+    @apply bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-center;
+  }
+
+  .status-waiting {
+    @apply bg-gray-200 text-gray-800 px-2 py-1 rounded-full text-center;
+  }
 }

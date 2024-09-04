@@ -1,13 +1,12 @@
 package fr.projet.diginamic.backend.repositories;
 import java.util.List;
 import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import fr.projet.diginamic.backend.entities.Mission;
@@ -73,9 +72,9 @@ public interface MissionRepository extends JpaRepository<Mission, Long>, JpaSpec
      */
 	List<Mission> findByUser_Id(Long userId);
 	
-	 /**
+	/**
      * Retrieves a paginated list of missions for users managed by a specific manager.
-     * 
+     *
      * @param managerId The ID of the manager whose subordinates' missions are to be retrieved.
      * @param pageable  The pagination information.
      * @return A page of missions associated with the subordinates of the given manager.

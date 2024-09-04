@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -35,11 +36,11 @@ import fr.projet.diginamic.backend.dtos.DisplayedMissionDTO;
 import fr.projet.diginamic.backend.entities.Mission;
 import fr.projet.diginamic.backend.entities.UserEntity;
 import fr.projet.diginamic.backend.exceptions.MissionServiceException;
-import fr.projet.diginamic.backend.services.UserService;
-import fr.projet.diginamic.backend.services.CSVGenerationService;
-import fr.projet.diginamic.backend.services.MissionService;
-import fr.projet.diginamic.backend.services.JwtService;
 import fr.projet.diginamic.backend.services.AccessService;
+import fr.projet.diginamic.backend.services.CSVGenerationService;
+import fr.projet.diginamic.backend.services.JwtService;
+import fr.projet.diginamic.backend.services.MissionService;
+import fr.projet.diginamic.backend.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -48,7 +49,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpHeaders;
 
 
 /**
@@ -183,7 +183,8 @@ public class MissionController {
 			@RequestParam(value = "order", defaultValue = "asc") String order,
 			@RequestParam(value = "sort", defaultValue = "startDate") String sortField,
 			@RequestParam(value = "status", required = false) String status,
-			@RequestParam(value = "nature", required = false) String natureMission,
+			@RequestParam(value = "natureMission", required = false) String natureMission,
+			@RequestParam(value = "withExpense", required = false) String withExpense,
 			@RequestParam(value = "searchbar", required = false) String userNameOrLabel,
 			@RequestHeader(HttpHeaders.AUTHORIZATION) String token
 			) {
@@ -202,6 +203,7 @@ public class MissionController {
 			} else {
 				missions = missionService.findAllMissionsWithSpecsForCurrentUser(userEmail,status, natureMission,
 						userNameOrLabel,
+						withExpense,
 						pageable);
 			}	
             return ResponseEntity.ok(missions);

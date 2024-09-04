@@ -7,6 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum TransportEnum {
+    NONE("Aucun"),
     AIRPLANE("Air Plane"),
     CARPOOLING("Carpooling"),
     TRAIN("Train"),

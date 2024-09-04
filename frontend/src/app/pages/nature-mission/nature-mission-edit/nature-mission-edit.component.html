@@ -1,0 +1,30 @@
+<app-layout>
+<div class="edit-container">
+  <h2>Modifier la Nature de Mission</h2>
+  <form [formGroup]="editMissionForm" (ngSubmit)="onSubmit()">
+    <label for="label">Libellé:</label>
+    <input id="label" formControlName="label" type="text">
+
+    <label for="prime">Prime:</label>
+    <input id="prime" formControlName="prime" type="text">
+
+    <label for="startDate">Date de début:</label>
+    <input id="startDate" formControlName="startDate" type="date">
+
+    <label for="endDate">Date de fin:</label>
+    <input id="endDate" formControlName="endDate" type="date">
+
+    <label for="rate">Taux:</label>
+    <input id="rate" formControlName="rate" type="text">
+
+    <label for="eligibility">Éligibilité:</label>
+    <input id="eligibility" formControlName="eligibility" type="text">
+
+    <label for="billing">Facturation:</label>
+    <input id="billing" formControlName="billing" type="text">
+
+    <button type="submit">Enregistrer</button>
+    <button type="button" (click)="onCancel()">Annuler</button>
+  </form>
+</div>
+</app-layout>

@@ -1,0 +1,46 @@
+<div class="bg-white p-4 rounded-lg shadow-md w-full">
+    <div *ngIf="missions && missions.length > 0; else noData">
+      <div class="flex justify-between items-center mb-4">
+        <h6 class="font-medium leading-tight text-gray-700">Missions récentes</h6>
+      </div>
+
+      <div class="pl-3">
+        <div *ngFor="let group of groupedMissions()" class="mb-8"> 
+          
+          <span class="text-sm font-bold text-gray-700 mb-2 py-2 px-4" [ngClass]="{
+            'status-initial': group.status.toUpperCase() === 'INITIAL',
+            'status-validated': group.status.toUpperCase() === 'VALIDATED',
+            'status-in-progress': group.status.toUpperCase() === 'IN_PROGRESS',
+            'status-rejected': group.status.toUpperCase() === 'REJECTED',
+            'status-finished': group.status.toUpperCase() === 'FINISHED', 
+            'status-waiting': group.status.toUpperCase() === 'WAITING'
+          }">{{getStatusLabel(group.status)}}</span>
+          <div class="mb-4"></div>
+          <div *ngFor="let mission of group.missions" class="flex justify-between items-center hover:bg-slate-100 p-4 cursor-pointer" (click)="navigateToMission(mission.id)">
+            <div class="text-sm text-gray-600 truncate ...">{{ mission.label }}</div>
+            <div class="flex items-center space-x-2">
+              <span class="text-sm text-gray-400">du: {{ mission.startDate | date:'dd/MM/yyyy' }}</span>
+              <span class="text-sm text-gray-400">au: {{ mission.endDate | date:'dd/MM/yyyy' }}</span>
+                   
+              <!-- <button mat-icon-button [matMenuTriggerFor]="menu" class="text-sm font-medium">
+                <mat-icon class="text-slate-500">more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu" aftermenu="matMenu" xPosition="before" [yPosition]="'below'">
+                <button mat-menu-item >
+                  <mat-icon>reorder</mat-icon>
+                  <span>Détails</span>
+                </button>
+              </mat-menu> -->
+        
+            </div>      
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-template #noData>
+      <div class="flex justify-center items-center h-full">
+        <p class="text-gray-500 text-center">Aucune donnée pour le moment</p>
+      </div>
+    </ng-template>
+  </div>
+  

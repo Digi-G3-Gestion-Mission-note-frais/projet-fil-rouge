@@ -21,16 +21,19 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 public class NatureMissionDTO {
-
-    private Long id;
     private String label;
-    private Double Adr;
-    private Boolean IsBilled;
+    private Double adr;
+    private Boolean isBilled;
     private Date startDate;
     private Date endDate;
-    private Double BountyRate;
+    private Double bountyRate;
     private Boolean isEligibleToBounty;
 
+    // Assurez-vous que ce constructeur existe
 
+
+    
+    
+    // Autres getters et setters ici
 }
 
