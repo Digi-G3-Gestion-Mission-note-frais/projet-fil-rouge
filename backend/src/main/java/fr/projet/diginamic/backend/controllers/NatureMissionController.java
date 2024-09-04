@@ -1,20 +1,29 @@
 package fr.projet.diginamic.backend.controllers;
 
-import fr.projet.diginamic.backend.dtos.NatureMissionDTO;
-import fr.projet.diginamic.backend.services.NatureMissionService;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import fr.projet.diginamic.backend.dtos.NatureMissionDTO;
+import fr.projet.diginamic.backend.services.NatureMissionService;
 
 /**
  * REST controller for managing NatureMission entities.
  */
 @RestController
-@RequestMapping("/api/missions/natures")
+@RequestMapping("/api/mission/natures")
 public class NatureMissionController {
+
 
     @Autowired
     private NatureMissionService natureMissionService;
@@ -29,6 +38,12 @@ public class NatureMissionController {
         List<NatureMissionDTO> naturesMissions = natureMissionService.getAllNatureMissions();
         return ResponseEntity.ok(naturesMissions);
     }
+    
+    @GetMapping("/naturemissions")
+    public ResponseEntity<List<NatureMissionDTO>> getAllNatureMissions() {
+    List<NatureMissionDTO> missions = natureMissionService.getAllNatureMissions();
+    return ResponseEntity.ok(missions);
+}
 
     /**
      * Get a NatureMission by ID.
@@ -81,6 +96,12 @@ public class NatureMissionController {
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @GetMapping("/id-by-label/{label}")
+    public ResponseEntity<Long> getIdByLabel(@PathVariable String label) {
+    Long id = natureMissionService.getIdByLabel(label);
+    return ResponseEntity.ok(id);
+}
 
 }
 

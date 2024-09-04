@@ -70,7 +70,7 @@ public class CalculateMissionPricing {
 
     /**
      * Summarizes bounties by month from a list of mission DTOs.
-     * 
+     *
      * @param missions List of DisplayedMissionDTO
      * @return A map with month as key and sum of bounties as value.
      */
@@ -80,7 +80,7 @@ public class CalculateMissionPricing {
             String monthKey = new SimpleDateFormat("MMMM", Locale.FRENCH).format(mission.getStartDate()).toUpperCase();
             if (monthSum.containsKey(monthKey)){
                 Double bountiesSum = monthSum.get(monthKey) + mission.getBountyAmount() + 1;
-                monthSum.put(monthKey, bountiesSum);       
+                monthSum.put(monthKey, bountiesSum);
             } else {
                 monthSum.put(monthKey, mission.getBountyAmount());
             }

@@ -38,6 +38,7 @@ export class NatureMissionService {
 
   // Méthode pour supprimer une nature de mission
   deleteNatureMission(id: number): Observable<void> {
+    console.log(`Suppression de la mission avec l'ID: ${id}`);
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

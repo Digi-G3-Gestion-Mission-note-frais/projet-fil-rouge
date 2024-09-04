@@ -17,7 +17,6 @@ public class NatureMissionMapper {
      */
     public NatureMission dtoToBean(NatureMissionDTO dto) {
         NatureMission entity = new NatureMission();
-        entity.setId(dto.getId());
         entity.setLabel(dto.getLabel());
         entity.setAdr(dto.getAdr()); // Correct method name
         entity.setIsBilled(dto.getIsBilled()); // Correct method name
@@ -36,7 +35,6 @@ public class NatureMissionMapper {
      */
     public NatureMissionDTO beanToDto(NatureMission entity) {
         NatureMissionDTO dto = new NatureMissionDTO();
-        dto.setId(entity.getId());
         dto.setLabel(entity.getLabel());
         dto.setAdr(entity.getAdr()); // Correct method name
         dto.setIsBilled(entity.getIsBilled()); // Correct method name

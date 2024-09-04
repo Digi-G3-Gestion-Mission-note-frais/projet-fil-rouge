@@ -1,32 +1,31 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   Router,
   RouterLink,
-  RouterModule,
-  ActivatedRoute,
+  RouterModule
 } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { CommonModule } from '@angular/common';
-import { CookieService } from 'ngx-cookie-service';
 import {
-  faHouse,
-  faUsers,
   faBook,
-  faSuitcase,
-  faScroll,
   faCoins,
   faGear,
+  faHouse,
   faRightFromBracket,
+  faScroll,
+  faSuitcase,
+  faUsers,
   IconDefinition,
 } from '@fortawesome/free-solid-svg-icons';
+import { Store } from '@ngrx/store';
+import ms from 'ms';
+import { Observable } from 'rxjs';
 import { SidebarMenuType, UserType } from '../interfaces/types';
 import { AuthService } from '../services/auth/auth.service';
-import ms from 'ms';
-import { Store } from '@ngrx/store';
-import { AuthStateReducer } from '../store/auth/auth.reducer';
 import { loginAction } from '../store/auth/auth.actions';
+import { AuthStateReducer } from '../store/auth/auth.reducer';
 import { authSelector } from '../store/auth/auth.selectors';
-import { Observable } from 'rxjs';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-layout',
@@ -69,7 +68,7 @@ export class LayoutComponent implements OnInit {
       },
       {
         icon: this.faSuitcaseIcon,
-        link: '/mission-nature',
+        link: '/naturemissions',
         name: 'Nature des missions',
         active: false,
       },

@@ -3,7 +3,14 @@ package fr.projet.diginamic.backend.entities;
 import java.util.Date;
 import java.util.Set;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -63,4 +70,16 @@ public class NatureMission {
     /** The missions associated with this nature */
     @OneToMany(mappedBy = "natureMission")
     private Set<Mission> missions;
+
+    public NatureMission(Long id, String label, Double adr, Boolean isBilled, Date startDate, Date endDate, Double bountyRate, Boolean isEligibleToBounty) {
+        this.id = id;
+        this.label = label;
+        this.adr = adr;
+        this.isBilled = isBilled;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.bountyRate = bountyRate;
+        this.isEligibleToBounty = isEligibleToBounty;
+        
+    }
 }

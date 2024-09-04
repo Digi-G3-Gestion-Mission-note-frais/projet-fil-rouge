@@ -1,0 +1,119 @@
+<app-layout>
+  <section class="admin-natureMission-list">
+    <div class="search-bar flex justify-between items-center mb-4">
+      <span>{{ totalItems }} résultats</span>
+      <div class="flex items-center gap-x-4">
+        <input
+          type="text"
+          placeholder="Rechercher natureMission, collaborateur..."
+          (input)="searchMission($event)"
+          class="border p-2 rounded"
+        />
+        <button
+          class="add-button bg-blue-500 text-white px-4 py-2 rounded"
+          (click)="goToCreatePage()"
+        >
+          Ajouter Nouveau
+        </button>
+      </div>
+    </div>
+
+    <table class="natureMission-table w-full table-auto border-collapse">
+      <thead>
+        <tr>
+          <th class="border px-4 py-2">ID</th>
+          <th class="border px-4 py-2">Libellé</th>
+          <th class="border px-4 py-2">Facture</th>
+          <th class="border px-4 py-2">Prime</th>
+          <th class="border px-4 py-2">Début</th>
+          <th class="border px-4 py-2">Fin</th>
+          <th class="border px-4 py-2">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let natureMission of natureMissions" class="hover:bg-gray-100">
+          <td class="border px-4 py-2">{{ natureMission.id }}</td>
+          <td class="border px-4 py-2">{{ natureMission.label }}</td>
+          <td class="border px-4 py-2">
+            {{ natureMission.isEligibleToBounty ? "Oui" : "Non" }}
+          </td>
+          <td class="border px-4 py-2">{{ natureMission.bountyRate }}</td>
+          <td class="border px-4 py-2">
+            {{ natureMission.startDate | date : "dd/MM/yyyy" }}
+          </td>
+          <td class="border px-4 py-2">
+            {{ natureMission.endDate | date : "dd/MM/yyyy" }}
+          </td>
+          <td class="border px-4 py-2 flex gap-x-2">
+            <button
+              (click)="onEdit(natureMission.id)"
+              class="text-yellow-500 hover:text-yellow-700"
+            >
+              <fa-icon [icon]="faPenIcon" class="w-5 h-5"></fa-icon>
+            </button>
+            <button
+              (click)="onDelete(natureMission.id)"
+              class="text-red-500 hover:text-red-700"
+            >
+              <fa-icon [icon]="faTrashIcon" class="w-5 h-5"></fa-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="pagination flex justify-center items-center mt-4 gap-x-2">
+      <button
+        (click)="prevPage()"
+        [disabled]="currentPage === 1"
+        class="px-3 py-1 border rounded disabled:opacity-50"
+      >
+        &lt;
+      </button>
+      <button
+        *ngFor="let page of pages"
+        (click)="goToPage(page)"
+        [class.active]="page === currentPage"
+        class="px-3 py-1 border rounded {{
+          page === currentPage ? 'bg-blue-500 text-white' : ''
+        }}"
+      >
+        {{ page }}
+      </button>
+      <button
+        (click)="nextPage()"
+        [disabled]="currentPage === pages.length"
+        class="px-3 py-1 border rounded disabled:opacity-50"
+      >
+        &gt;
+      </button>
+    </div>
+
+    <!-- Modal de confirmation de suppression -->
+    <div
+      *ngIf="showModal"
+      class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50"
+    >
+      <div class="bg-white p-6 rounded shadow-lg">
+        <h2 class="text-xl font-semibold mb-4">Confirmer la suppression</h2>
+        <p class="mb-4">
+          Êtes-vous sûr de vouloir supprimer cette natureMission ?
+        </p>
+        <div class="flex justify-end gap-x-4">
+          <button
+            (click)="confirmDelete()"
+            class="bg-red-500 text-white px-4 py-2 rounded"
+          >
+            Supprimer
+          </button>
+          <button
+            (click)="cancelDelete()"
+            class="bg-gray-300 text-gray-700 px-4 py-2 rounded"
+          >
+            Annuler
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+</app-layout>

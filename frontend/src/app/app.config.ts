@@ -1,19 +1,18 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
-
-import { routes } from './app.routes';
-import { provideStore } from '@ngrx/store';
-import { provideClientHydration } from '@angular/platform-browser';
-import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { tokenInterceptor } from './middlewares/token/token.interceptor';
+import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideToastr } from 'ngx-toastr';
-import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
-import { BarController, Legend, Colors, BarElement, CategoryScale, LinearScale, Title, Tooltip } from 'chart.js';
+import { provideRouter } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { AuthReducer } from './store/auth/auth.reducer';
+import { provideStore } from '@ngrx/store';
+import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { BarController, BarElement, CategoryScale, Colors, Legend, LinearScale, Title, Tooltip } from 'chart.js';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
+import { provideToastr } from 'ngx-toastr';
 import { environment } from '../environments/environment.development';
+import { routes } from './app.routes';
+import { tokenInterceptor } from './middlewares/token/token.interceptor';
+import { AuthReducer } from './store/auth/auth.reducer';
 
 export const appConfig: ApplicationConfig = {
   providers: [
